@@ -28,3 +28,32 @@ CREATE TABLE payments (
     status VARCHAR(20) DEFAULT 'pending',
     created_at TIMESTAMP DEFAULT now()
 );
+
+CREATE TABLE professionals (
+                               id UUID PRIMARY KEY,
+                               full_name VARCHAR(255) NOT NULL,
+                               profession VARCHAR(100),
+                               bio TEXT,
+                               price_per_hour DECIMAL(10,2),
+                               rating_avg DECIMAL(3,2),
+                               created_at TIMESTAMP DEFAULT now()
+);
+
+
+CREATE TABLE availability (
+                              id UUID PRIMARY KEY,
+                              professional_id UUID REFERENCES professionals(id),
+                              start_time TIMESTAMP NOT NULL,
+                              end_time TIMESTAMP NOT NULL,
+                              created_at TIMESTAMP DEFAULT now()
+);
+
+CREATE TABLE reviews (
+                         id UUID PRIMARY KEY,
+                         professional_id UUID REFERENCES professionals(id),
+                         customer_id UUID REFERENCES users(id),
+                         rating INT CHECK (rating >= 1 AND rating <= 5),
+                         comment TEXT,
+                         created_at TIMESTAMP DEFAULT now()
+);
+
